@@ -14,8 +14,12 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JCheckBox;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 public class ClayIllustrator extends JFrame {
+	private final Action action = new SwingAction();
 	public  ClayIllustrator() {
 		Color color1 = new Color(22, 22, 22);
 		Color color2 = new Color(225, 225, 225);
@@ -27,7 +31,7 @@ public class ClayIllustrator extends JFrame {
 		Color color8 = new Color(201, 154, 16);
 		Color color9 = new Color(16, 167, 201);
 		Color color10 = new Color(40, 113, 155);
-
+		
 		// shows the current selected color
 		JPanel panelColorChoice = new JPanel();
 		panelColorChoice.setBounds(10, 11, 41, 44);
@@ -45,6 +49,7 @@ public class ClayIllustrator extends JFrame {
 				int colorR = color1.getRed();
 				int colorG = color1.getGreen();
 				int colorB = color1.getBlue();
+				int layer = 1;
 				ClayIllustratorPanel.colorChange(colorR, colorG, colorB);
 				panelColorChoice.setBackground(color1);
 			}
@@ -187,7 +192,7 @@ public class ClayIllustrator extends JFrame {
 		btnColor10.setBounds(151, 32, 23, 23);
 		getContentPane().add(btnColor10);
 		
-		// generate the canvas (aka panel)
+		// generate the panel
 		JPanel panel = new ClayIllustratorPanel();
 		panel.setBounds(10, 63, 590, 357);
 		getContentPane().add(panel);
@@ -197,7 +202,7 @@ public class ClayIllustrator extends JFrame {
 		sldrBlobSize.setToolTipText("Change size of clay");
 		sldrBlobSize.setMaximum(160);
 		sldrBlobSize.setMinimum(30);
-		sldrBlobSize.setValue(40);
+		sldrBlobSize.setValue(70);
 		sldrBlobSize.setBounds(183, 32, 100, 23);
 		getContentPane().add(sldrBlobSize);
 		
@@ -206,11 +211,16 @@ public class ClayIllustrator extends JFrame {
 		lblSize.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSize.setBounds(184, 11, 99, 14);
 		getContentPane().add(lblSize);
+		
+		JCheckBox chckbxPress = new JCheckBox("Squish");
+		chckbxPress.setToolTipText("Squishes clay inward");
+		chckbxPress.setBounds(289, 11, 68, 23);
+		getContentPane().add(chckbxPress);
+		
 		sldrBlobSize.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 					int newSize = sldrBlobSize.getValue();
 					ClayIllustratorPanel.sizeChange(newSize);
-					System.out.println(newSize);
 					lblSize.setText("Size: " + sldrBlobSize.getValue());
 			}
 		});
@@ -221,4 +231,12 @@ public class ClayIllustrator extends JFrame {
 		window.setSize(new Dimension(700, 500));
 		window.setVisible(true);
 	}	
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
 }
