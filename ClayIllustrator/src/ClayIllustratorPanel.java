@@ -2,55 +2,60 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.util.Random;
 import java.awt.Graphics;
-import java.awt.List;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.awt.event.*;
 
 public class ClayIllustratorPanel extends JPanel {
 	Random random = new Random();
 	static int newSize = 70;
 	static Color selectedColor;
-	ArrayList<Blob> blobList;
-	int clickNum = 0;
-
+	int clickNum = 1;
+	ArrayList<Blob> bl1 = new ArrayList<Blob>();
+	boolean clickOn;
+	
 	public ClayIllustratorPanel() {  		
 		selectedColor = new Color(200,100,128);
 		setBackground(Color.WHITE);
 		addMouseListener(new BlobListener());
 		addMouseMotionListener(new BlobListener());
-		blobList = new ArrayList<Blob>();
 	}
 	
 	private class BlobListener extends MouseAdapter{    	
 		// listens for mouse presses. if mouse is pressed, place a blob at x,y
 		public void mousePressed(MouseEvent e) {
-			blobList.add(new Blob(e.getX(), e.getY(), newSize));
+			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
+			clickOn = true;
 		}
 		public void mouseDragged(MouseEvent e) { 			
-			blobList.add(new Blob(e.getX(), e.getY(), newSize));
+			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
+			clickOn = true;
 		}
 		public void mouseReleased(MouseEvent e) {
+			clickOn = false;
 			clickNum++;
+			//bl1.clear();
 		}
 	}
 
 	public void paintComponent(Graphics c) {
 		super.paintComponent(c); 
-			for(Blob b: blobList) {
+			for(Blob b: bl1) {
 				b.drawBlob(c);
 			}
-			for(Blob b: blobList) {
+			for(Blob b: bl1) {
 				b.drawEffects1(c);
 			}
-			for(Blob b: blobList) {
+			for(Blob b: bl1) {
 				b.drawEffects2(c);
 			}
-			for(Blob b: blobList) {
+			for(Blob b: bl1) {
 				b.drawEffects3(c);
-			}	
-				repaint();
+			}
+			repaint();
+			if (clickOn == false) {
+			c.copyArea(0, 0, super.getWidth(), super.getHeight(), 0, 0);
+				
+			}
 		}
 	
 	public static void colorChange(int r, int g, int b) {
@@ -75,11 +80,13 @@ public class ClayIllustratorPanel extends JPanel {
 		private Color splig3;
 		private int rand;
 		private int randC;
+		private int click;
 	
-		public Blob(int newX, int newY, int newSize) {
+		public Blob(int newX, int newY, int newSize, int clickNum) {
 			x = newX;
 			y = newY;
 			size = newSize;
+			click = clickNum;
 			rand = random.nextInt(3);
 			randC = random.nextInt(2);
 			color = selectedColor;
