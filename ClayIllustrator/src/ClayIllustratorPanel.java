@@ -2,8 +2,10 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.util.Random;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class ClayIllustratorPanel extends JPanel {
 	Random random = new Random();
@@ -11,6 +13,7 @@ public class ClayIllustratorPanel extends JPanel {
 	static Color selectedColor;
 	int clickNum = 1;
 	ArrayList<Blob> bl1 = new ArrayList<Blob>();
+	BufferedImage bi;
 	boolean clickOn;
 	
 	public ClayIllustratorPanel() {  		
@@ -23,40 +26,48 @@ public class ClayIllustratorPanel extends JPanel {
 	private class BlobListener extends MouseAdapter{    	
 		// listens for mouse presses. if mouse is pressed, place a blob at x,y
 		public void mousePressed(MouseEvent e) {
-			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
 			clickOn = true;
+			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
+			
 		}
 		public void mouseDragged(MouseEvent e) { 			
-			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
 			clickOn = true;
+			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
+			
 		}
 		public void mouseReleased(MouseEvent e) {
 			clickOn = false;
-			clickNum++;
-			//bl1.clear();
+			bl1.clear();
 		}
 	}
 
 	public void paintComponent(Graphics c) {
 		super.paintComponent(c); 
-			for(Blob b: bl1) {
-				b.drawBlob(c);
-			}
-			for(Blob b: bl1) {
-				b.drawEffects1(c);
-			}
-			for(Blob b: bl1) {
-				b.drawEffects2(c);
-			}
-			for(Blob b: bl1) {
-				b.drawEffects3(c);
-			}
-			repaint();
-			if (clickOn == false) {
-			c.copyArea(0, 0, super.getWidth(), super.getHeight(), 0, 0);
-				
-			}
+		Graphics2D c2 = (Graphics2D) c;
+
+		BufferedImage imageBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics imageC2 = imageBuffer.createGraphics();
+		
+		for(Blob b: bl1) {
+			b.drawBlob(imageC2);
 		}
+		for(Blob b: bl1) {
+			b.drawEffects1(imageC2);
+		}
+		for(Blob b: bl1) {
+			b.drawEffects2(imageC2);
+		}
+		for(Blob b: bl1) {
+			b.drawEffects3(imageC2);
+		}
+		repaint();
+		c2.drawImage(imageBuffer, 0, 0, this);
+			
+		if (clickOn == false) {
+			//c.copyArea(0, 0, super.getWidth(), super.getHeight(), 55, 55);
+			clickOn = true;
+		}
+	}
 	
 	public static void colorChange(int r, int g, int b) {
 		int colorR = r;
