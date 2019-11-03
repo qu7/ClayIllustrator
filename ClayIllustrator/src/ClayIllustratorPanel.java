@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
+
 public class ClayIllustratorPanel extends JPanel {
 	Random random = new Random();
 	static int newSize = 70;
@@ -15,6 +16,9 @@ public class ClayIllustratorPanel extends JPanel {
 	ArrayList<Blob> bl1 = new ArrayList<Blob>();
 	BufferedImage bi;
 	boolean clickOn;
+	boolean edits;
+	BufferedImage imageBuffer;
+	Graphics imageC2;
 	
 	public ClayIllustratorPanel() {  		
 		selectedColor = new Color(200,100,128);
@@ -26,28 +30,34 @@ public class ClayIllustratorPanel extends JPanel {
 	private class BlobListener extends MouseAdapter{    	
 		// listens for mouse presses. if mouse is pressed, place a blob at x,y
 		public void mousePressed(MouseEvent e) {
+			edits = true;
 			clickOn = true;
 			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
 			
 		}
 		public void mouseDragged(MouseEvent e) { 			
+			edits = true;
 			clickOn = true;
 			bl1.add(new Blob(e.getX(), e.getY(), newSize, clickNum));
 			
 		}
 		public void mouseReleased(MouseEvent e) {
+			edits = true;
 			clickOn = false;
-			bl1.clear();
 		}
 	}
 
 	public void paintComponent(Graphics c) {
 		super.paintComponent(c); 
 		Graphics2D c2 = (Graphics2D) c;
-
-		BufferedImage imageBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-		Graphics imageC2 = imageBuffer.createGraphics();
-		
+		if (edits == false) {
+			imageBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+			imageC2 = imageBuffer.createGraphics();
+		}
+		else {
+			
+		}
+	
 		for(Blob b: bl1) {
 			b.drawBlob(imageC2);
 		}
@@ -61,11 +71,20 @@ public class ClayIllustratorPanel extends JPanel {
 			b.drawEffects3(imageC2);
 		}
 		repaint();
+		
 		c2.drawImage(imageBuffer, 0, 0, this);
 			
 		if (clickOn == false) {
-			//c.copyArea(0, 0, super.getWidth(), super.getHeight(), 55, 55);
+//			try {
+//			    // retrieve image
+//				File saved = new File("saved.png");
+//			    ImageIO.write(imageBuffer, "png", saved);
+//			} catch (IOException e) {
+//				System.out.println("Save failed.");
+//			}
+			c2.drawImage(imageBuffer, 0, 0, this);
 			clickOn = true;
+			bl1.clear();
 		}
 	}
 	
