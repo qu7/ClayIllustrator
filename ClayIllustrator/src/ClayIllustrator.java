@@ -3,34 +3,28 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Button;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 import javax.swing.JSlider;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JCheckBox;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 
 public class ClayIllustrator extends JFrame {
-	private final Action action = new SwingAction();
 	public  ClayIllustrator() {
-		Color color1 = new Color(22, 22, 22);
-		Color color2 = new Color(225, 225, 225);
-		Color color3 = new Color(222, 86, 86);
-		Color color4 = new Color(109, 225, 118);
-		Color color5 = new Color(18, 155, 32);
-		Color color6 = new Color(35, 110, 43);
-		Color color7 = new Color(212, 225, 84);
-		Color color8 = new Color(201, 154, 16);
-		Color color9 = new Color(16, 167, 201);
-		Color color10 = new Color(40, 113, 155);
+		Color color1 = new Color(22, 22, 22); // black
+		Color color2 = new Color(210, 210, 210); // white
+		Color color3 = new Color(209, 35, 35);  // red
+		Color color4 = new Color (225, 210, 179); // pale flesh
+		Color color5 = new Color(218, 165, 120); // tan flesh
+		Color color6 = new Color(226, 210, 22); // dandelion
+		Color color7 = new Color(224, 223, 118); // light yellow
+		Color color8 = new Color(27, 79, 197); // blue
+		Color color9 = new Color(21, 135, 48); // dark green
+		Color color10 = new Color(44, 44, 44); // black 2
 		
 		// shows the current selected color
 		JPanel panelColorChoice = new JPanel();
@@ -49,7 +43,6 @@ public class ClayIllustrator extends JFrame {
 				int colorR = color1.getRed();
 				int colorG = color1.getGreen();
 				int colorB = color1.getBlue();
-				int layer = 1;
 				ClayIllustratorPanel.colorChange(colorR, colorG, colorB);
 				panelColorChoice.setBackground(color1);
 			}
@@ -201,7 +194,7 @@ public class ClayIllustrator extends JFrame {
 		sldrBlobSize.setPaintLabels(true);
 		sldrBlobSize.setToolTipText("Change size of clay");
 		sldrBlobSize.setMaximum(160);
-		sldrBlobSize.setMinimum(30);
+		sldrBlobSize.setMinimum(10);
 		sldrBlobSize.setValue(70);
 		sldrBlobSize.setBounds(183, 32, 100, 23);
 		getContentPane().add(sldrBlobSize);
@@ -231,12 +224,4 @@ public class ClayIllustrator extends JFrame {
 		window.setSize(new Dimension(700, 500));
 		window.setVisible(true);
 	}	
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
-	}
 }
