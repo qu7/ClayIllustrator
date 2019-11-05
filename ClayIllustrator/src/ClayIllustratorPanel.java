@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.util.Random;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Transparency;
 import java.util.ArrayList;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class ClayIllustratorPanel extends JPanel {
 	Graphics imageC2;
 	
 	public ClayIllustratorPanel() {  		
-		selectedColor = new Color(200,100,128);
+		selectedColor = new Color(22,22,22);
 		setBackground(Color.WHITE);
 		addMouseListener(new BlobListener());
 		addMouseMotionListener(new BlobListener());
@@ -82,17 +84,19 @@ public class ClayIllustratorPanel extends JPanel {
 		}
 		
 		for(Blob b: bl1) {
-			b.drawGfx(imageC2);
+			b.drawEffects3(imageC2);
 		}
 		
 		for(Blob b: bl1) {
-			b.drawEffects3(imageC2);
+			b.drawGfx(imageC2);
 		}
 	
 		repaint();
 		
 		c2.drawImage(imageBuffer, 0, 0, this);
-			
+		c.dispose();
+		c2.dispose();
+		
 		if (clickOn == false) {
 //			try {
 //			    // retrieve image
@@ -140,58 +144,64 @@ public class ClayIllustratorPanel extends JPanel {
 			randC = random.nextInt(2);
 			color = selectedColor;
 			white = new Color(200 + randC, 200 + randC, 200 + randC, 70);
-			shadow = new Color(color.getRed() - 4, color.getGreen() - 4, color.getBlue() - 3, 31);
+			shadow = new Color(color.getRed() - 20, color.getGreen() - 20, color.getBlue() - 20, 21);
 			splig = new Color(color.getRed() + 10 + randC, color.getGreen() + 10 + randC, color.getBlue() + 10);
 			splig2 = new Color(color.getRed() + 20 + randC, color.getGreen() + 20, color.getBlue() + 20 + randC);
-			splig3 = new Color(color.getRed() + 27, color.getGreen() + 27 + randC, color.getBlue() + 27, 80);
-			finger= null;
-				try {
-					finger = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger1.png"));
+			splig3 = new Color(color.getRed() + 27, color.getGreen() + 27 + randC, color.getBlue() + 27, 30);
+			
+			try {
+				finger = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger2.png"));
 				} catch (IOException e) {
-			}	
-				WritableRaster raster =  finger.getRaster();
+			}			
 				
-		        for (int xx = 0; xx < finger.getWidth(); xx++) {
-		            for (int yy = 0; yy < finger.getHeight(); yy++) {
-		                int[] pixels = raster.getPixel(xx, yy, (int[]) null);
-		                pixels[0] = color.getRed();
-		                pixels[1] = color.getGreen();
-		                pixels[2] = color.getBlue();
-		                raster.setPixel(xx, yy, pixels);
-		            }
-		       }
+		    for (int xx = 0; xx < finger.getWidth(); xx++) {
+		        for (int yy = 0; yy < finger.getHeight(); yy++) {
+		        	Color colors = new Color(finger.getRGB(xx, yy));
+		        	int red = colors.getRed();
+		        	int green = colors.getGreen();
+		        	int blue = colors.getBlue();
+		        	int value = ((red + green + blue)/3);
+		        	if (finger.getRGB(xx, yy) == Transparency.TRANSLUCENT) {
+		        		finger.setRGB(xx, yy, new Color(0, 0, 0, 0).getRGB());
+		        	}
+		        	else {
+		        		finger.setRGB(xx, yy, new Color(value, value, value, 23).getRGB());
+		        	}
+			    }
+		   }
 		}
 
 		public void shadow(Graphics c) {
 			c.setColor(shadow);
-			c.fillOval(x - size/2 - 2, y-size/2 - 2, size - 10, size - 10);
+			c.fillOval(x - size/2 + 2, y-size/2 + 2, size - 10, size - 10);
 		}
 		
 		public void drawBlob(Graphics c) {
 			c.setColor(color);
-			c.fillOval(x - size/2, y-size/2, size - 12, size - 12);
+			c.fillOval(x - size/2 + 3, y-size/2 + 3, size - 13, size - 13);
+
 		}
 	
 		public void drawEffects1(Graphics c) {
 			c.setColor(splig);
-			c.fillOval(x - size/2 + 1, y-size/2 + 1, size - 14, size - 14);
+			c.fillOval(x - size/2 + 4, y-size/2 + 4, size - 16, size - 16);
+
 		}
 		
 		public void drawEffects2(Graphics c) {
 			c.setColor(splig2);
-			c.fillOval(x - size/2 + 1, y-size/2 + 1, size - 16, size - 16);
+			c.fillOval(x - size/2 + 5, y-size/2 + 5, size - 19, size - 19);
 		}
 
 		public void drawEffects3(Graphics c) {
 			c.setColor(splig3);
-			c.fillOval(x - size/2 + 1, y-size/2 + 1, size - 18, size - 18);
+			c.fillOval(x - size/2 + 6, y-size/2 + 6, size - 22, size - 22);
 		}
 		
 		public void drawGfx(Graphics c) {
-
-			c.drawImage(finger, x - size/2, y-size/2, size - 12, size - 12, null);
-			c.setColor(white);
-			c.fillOval(x - size/2, y-size/2, size - 20, size - 20);
+		//	c.setColor(white);
+		//	c.fillOval(x - size/2 + 7, y-size/2 + 7, size - 24, size - 24);
+			c.drawImage(finger, x - size/2 + 7, y-size/2 + 7, size - 22, size - 22, null);
 		}	
 		
 
