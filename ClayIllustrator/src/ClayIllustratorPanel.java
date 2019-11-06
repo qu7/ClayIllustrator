@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.util.Random;
 import java.awt.Graphics;
@@ -24,7 +26,11 @@ public class ClayIllustratorPanel extends JPanel {
 	boolean clickOn;
 	boolean edits;
 	BufferedImage imageBuffer;
-	BufferedImage finger; 
+	BufferedImage finger0; 
+	BufferedImage finger1; 
+	BufferedImage finger2; 
+	BufferedImage finger3; 
+
 	Graphics imageC2;
 	
 	public ClayIllustratorPanel() {  		
@@ -74,19 +80,19 @@ public class ClayIllustratorPanel extends JPanel {
 		for(Blob b: bl1) {
 			b.drawBlob(imageC2);
 		}
-		
-		for(Blob b: bl1) {
-			b.drawEffects1(imageC2);
-		}
-		
-		for(Blob b: bl1) {
-			b.drawEffects2(imageC2);
-		}
-		
-		for(Blob b: bl1) {
-			b.drawEffects3(imageC2);
-		}
-		
+//		
+//		for(Blob b: bl1) {
+//			b.drawEffects1(imageC2);
+//		}
+//		
+//		for(Blob b: bl1) {
+//			b.drawEffects2(imageC2);
+//		}
+//		
+//		for(Blob b: bl1) {
+//			b.drawEffects3(imageC2);
+//		}
+//		
 		for(Blob b: bl1) {
 			b.drawGfx(imageC2);
 		}
@@ -96,6 +102,7 @@ public class ClayIllustratorPanel extends JPanel {
 		c2.drawImage(imageBuffer, 0, 0, this);
 		c.dispose();
 		c2.dispose();
+		imageBuffer.flush();
 		
 		if (clickOn == false) {
 //			try {
@@ -143,32 +150,21 @@ public class ClayIllustratorPanel extends JPanel {
 			rand = random.nextInt(3);
 			randC = random.nextInt(2);
 			color = selectedColor;
-			white = new Color(200 + randC, 200 + randC, 200 + randC, 70);
 			shadow = new Color(color.getRed() - 20, color.getGreen() - 20, color.getBlue() - 20, 21);
-			splig = new Color(color.getRed() + 10 + randC, color.getGreen() + 10 + randC, color.getBlue() + 10);
-			splig2 = new Color(color.getRed() + 20 + randC, color.getGreen() + 20, color.getBlue() + 20 + randC);
-			splig3 = new Color(color.getRed() + 27, color.getGreen() + 27 + randC, color.getBlue() + 27, 30);
+			splig = new Color(color.getRed() + 15 + randC, color.getGreen() + 14 + randC, color.getBlue() + 15);
+			splig2 = new Color(color.getRed() + 23 + randC, color.getGreen() + 23, color.getBlue() + 25 + randC);
+			splig3 = new Color(color.getRed() + 40, color.getGreen() + 40, color.getBlue() + 40);
 			
 			try {
-				finger = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger2.png"));
+				finger0 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger0.png"));
+				finger1 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger1.png"));
+				finger2 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger2.png"));
+				finger3 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger3.png"));
 				} catch (IOException e) {
-			}			
-				
-		    for (int xx = 0; xx < finger.getWidth(); xx++) {
-		        for (int yy = 0; yy < finger.getHeight(); yy++) {
-		        	Color colors = new Color(finger.getRGB(xx, yy));
-		        	int red = colors.getRed();
-		        	int green = colors.getGreen();
-		        	int blue = colors.getBlue();
-		        	int value = ((red + green + blue)/3);
-		        	if (finger.getRGB(xx, yy) == Transparency.TRANSLUCENT) {
-		        		finger.setRGB(xx, yy, new Color(0, 0, 0, 0).getRGB());
-		        	}
-		        	else {
-		        		finger.setRGB(xx, yy, new Color(value, value, value, 23).getRGB());
-		        	}
-			    }
-		   }
+			}		
+			
+			
+			
 		}
 
 		public void shadow(Graphics c) {
@@ -199,11 +195,25 @@ public class ClayIllustratorPanel extends JPanel {
 		}
 		
 		public void drawGfx(Graphics c) {
-		//	c.setColor(white);
-		//	c.fillOval(x - size/2 + 7, y-size/2 + 7, size - 24, size - 24);
-			c.drawImage(finger, x - size/2 + 7, y-size/2 + 7, size - 22, size - 22, null);
-		}	
-		
+			float opacity = 0.1f;
+			((Graphics2D) c).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 
+			if (rand == 0) {
+				c.drawImage(finger0, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
+				finger0.flush();
+			}
+			else if (rand == 1) {
+				c.drawImage(finger1, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
+				finger1.flush();		
+			}
+			else if (rand == 2) {
+				c.drawImage(finger2, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
+				finger2.flush();		
+			}
+			else {
+				c.drawImage(finger3, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
+				finger3.flush();		
+			}
+		}
 	}
 }
