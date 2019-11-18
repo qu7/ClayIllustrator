@@ -119,52 +119,43 @@ public class ClayIllustratorPanel extends JPanel {
 		private int y;
 		private int size;
 		private Color shadow;
-		private Color white;
 		private Color color;
-		private Color splig;
-		private Color splig2;
-		private Color splig3;
 		private int rand;
-		private int randC;
 	
 		public Blob(int newX, int newY, int newSize, int clickNum) {
 			x = newX;
 			y = newY;
 			size = newSize;
 			rand = random.nextInt(3);
-			randC = random.nextInt(2);
 			color = selectedColor;
 			shadow = new Color(color.getRed() - 20, color.getGreen() - 20, color.getBlue() - 20, 21);
 
 //			I keep a backup of these files located on my desktop to troubleshoot
-//			try {
-//				finger0 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger0.png"));
-//				finger1 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger1.png"));
-//				finger2 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger2.png"));
-//				finger3 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger3.png"));
-//				} catch (IOException e) {
-//			}
-			
 			try {
-				finger0 = ImageIO.read(new File("/resources/images/finger0.png"));
-				finger1 = ImageIO.read(new File("/resources/images/finger1.png"));
-				finger2 = ImageIO.read(new File("/resources/images/finger2.png"));
-				finger3 = ImageIO.read(new File("/resources/images/finger3.png"));
-			} catch (IOException e) {
-		}
-			
+				finger0 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger0.png"));
+				finger1 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger1.png"));
+				finger2 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger2.png"));
+				finger3 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger3.png"));
+			} catch (IOException e) {}
 			
 		}
+			
+//			try {
+//				finger0 = ImageIO.read(new File("/resources/images/finger0.png"));
+//				finger1 = ImageIO.read(new File("/resources/images/finger1.png"));
+//				finger2 = ImageIO.read(new File("/resources/images/finger2.png"));
+//				finger3 = ImageIO.read(new File("/resources/images/finger3.png"));
+//			} catch (IOException e) {
+//		}
 
 		public void shadow(Graphics c) {
 			c.setColor(shadow);
-			c.fillOval(x - size/2 + 2, y-size/2 + 2, size - 10, size - 10);
+			c.fillOval(x - size/2 + 1, y-size/2 + 1, size - 8, size - 8);
 		}
 		
 		public void drawBlob(Graphics c) {
 			c.setColor(color);
 			c.fillOval(x - size/2 + 3, y-size/2 + 3, size - 13, size - 13);
-
 		}
 
 		public void drawGfx(Graphics c) {
@@ -173,19 +164,19 @@ public class ClayIllustratorPanel extends JPanel {
 
 			if (rand == 0) {
 				c.drawImage(finger0, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger0.flush();
+				//finger0.flush();
 			}
 			else if (rand == 1) {
 				c.drawImage(finger1, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger1.flush();		
+				//finger1.flush();		
 			}
 			else if (rand == 2) {
 				c.drawImage(finger2, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger2.flush();		
+				//finger2.flush();		
 			}
 			else {
 				c.drawImage(finger3, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger3.flush();		
+				//finger3.flush();		
 			}
 		}
 	}
