@@ -164,19 +164,19 @@ public class ClayIllustratorPanel extends JPanel {
 
 			if (rand == 0) {
 				c.drawImage(finger0, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				//finger0.flush();
+				finger0.flush();
 			}
 			else if (rand == 1) {
 				c.drawImage(finger1, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				//finger1.flush();		
+				finger1.flush();		
 			}
 			else if (rand == 2) {
 				c.drawImage(finger2, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				//finger2.flush();		
+				finger2.flush();		
 			}
 			else {
 				c.drawImage(finger3, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				//finger3.flush();		
+				finger3.flush();		
 			}
 		}
 	}
