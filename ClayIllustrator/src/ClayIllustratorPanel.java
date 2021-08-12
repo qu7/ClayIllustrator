@@ -114,11 +114,18 @@ public class ClayIllustratorPanel extends JPanel {
 		newSize = blobSize;
 	}
 	
+	// each blob of paint is generated here
 	private class Blob {   				
 		private int x;
 		private int y;
 		private int size;
-		private Color shadow;
+		private Color colorShadow1;
+		private Color colorShadow2;
+		private Color colorShadow3;
+		private int redVariant;
+		private int greenVariant;
+		private int blueVariant;
+
 		private Color color;
 		private int rand;
 	
@@ -127,19 +134,12 @@ public class ClayIllustratorPanel extends JPanel {
 			y = newY;
 			size = newSize;
 			rand = random.nextInt(3);
-			color = selectedColor;
-			shadow = new Color(color.getRed() - 20, color.getGreen() - 20, color.getBlue() - 20, 21);
-
-//			I keep a backup of these files located on my desktop to troubleshoot
-			try {
-				finger0 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger0.png"));
-				finger1 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger1.png"));
-				finger2 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger2.png"));
-				finger3 = ImageIO.read(new File("C:\\Users\\Ana\\Desktop\\clay graphics\\finger3.png"));
-			} catch (IOException e) {}
-			
-		}
-			
+			color = new Color(selectedColor.getRed() + rand, selectedColor.getGreen() + rand, selectedColor.getBlue() + rand, 255-rand);
+		
+			colorShadow1 = new Color(color.getRed()/2 + rand, color.getGreen()/2 + rand, color.getBlue()/2 + rand, 200-rand);
+			colorShadow2 = new Color(color.getRed()/3 + rand, color.getGreen()/3 + rand, color.getBlue()/3 + rand, 180-rand);
+			colorShadow2 = new Color(color.getRed()/4 + rand, color.getGreen()/4 + rand, color.getBlue()/4 + rand, 160-rand);
+		
 //			try {
 //				finger0 = ImageIO.read(new File("/resources/images/finger0.png"));
 //				finger1 = ImageIO.read(new File("/resources/images/finger1.png"));
@@ -147,9 +147,20 @@ public class ClayIllustratorPanel extends JPanel {
 //				finger3 = ImageIO.read(new File("/resources/images/finger3.png"));
 //			} catch (IOException e) {
 //		}
-
+		}
+		
+		public void shadow3(Graphics c) {
+			c.setColor(colorShadow3);
+			c.fillOval(x - size/2 + 1, y-size/2 + 1, size - 3, size - 3);
+		}
+		
+		public void shadow2(Graphics c) {
+			c.setColor(colorShadow2);
+			c.fillOval(x - size/2 + 1, y-size/2 + 1, size - 6, size - 6);
+		}
+		
 		public void shadow(Graphics c) {
-			c.setColor(shadow);
+			c.setColor(colorShadow1);
 			c.fillOval(x - size/2 + 1, y-size/2 + 1, size - 8, size - 8);
 		}
 		
@@ -164,19 +175,19 @@ public class ClayIllustratorPanel extends JPanel {
 
 			if (rand == 0) {
 				c.drawImage(finger0, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger0.flush();
+//				finger0.flush();
 			}
 			else if (rand == 1) {
 				c.drawImage(finger1, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger1.flush();		
+//				finger1.flush();		
 			}
 			else if (rand == 2) {
 				c.drawImage(finger2, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger2.flush();		
+//				finger2.flush();		
 			}
 			else {
 				c.drawImage(finger3, x - size/2 + 3, y-size/2 + 3, size - 13, size - 13, null);
-				finger3.flush();		
+//				finger3.flush();		
 			}
 		}
 	}
